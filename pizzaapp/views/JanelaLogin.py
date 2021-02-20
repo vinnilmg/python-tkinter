@@ -4,6 +4,7 @@ import psycopg2 as ps
 from Cadastrar import Cadastrar
 from AdminJanela import AdminJanela
 from Postgre import Postgre
+from JanelaVisualizarCadastros import VisualizarCadastrosView
 
 
 class JanelaLogin():
@@ -11,6 +12,7 @@ class JanelaLogin():
 	def __init__(self):
 		self.postgre = Postgre()
 		self.root = Tk()
+		#self.root.resizable(True, True)
 		self.root.title('Login')
 
 		#Titulo
@@ -30,7 +32,7 @@ class JanelaLogin():
 		#buttons
 		Button(self.root, text='Login', bg='green3', width=10, command=self.verifica_login).grid(row=5, column=0, padx=5, pady=5)
 		Button(self.root, text='Cadastrar', bg='orange3', width=10, command=telaCadastro.cadastrar).grid(row=5, column=1, padx=5, pady=5)
-		Button(self.root, text='Visualizar cadastros', bg='white', width=17).grid(row=6, column=0, columnspan=2, padx=5, pady=5)
+		Button(self.root, text='Visualizar cadastros', bg='white', width=17, command=VisualizarCadastrosView).grid(row=6, column=0, columnspan=2, padx=5, pady=5)
 
 		self.root.mainloop()
 
