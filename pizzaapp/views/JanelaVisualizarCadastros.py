@@ -35,7 +35,6 @@ class VisualizarCadastrosView():
 		postgre = Postgre()
 
 		resultado = None
-
 		try:
 			with postgre.conn.cursor() as cursor:
 				cursor.execute('select id, usuario, senha, nivel from cadastros')
