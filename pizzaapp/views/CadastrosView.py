@@ -3,7 +3,7 @@ from tkinter import messagebox
 from tkinter.ttk import *
 from Postgre import Postgre
 
-class VisualizarCadastrosView():
+class Cadastro():
 
 	def __init__(self):
 		self.vc = Toplevel() #depende da janela root (principal)
@@ -55,3 +55,4 @@ class VisualizarCadastrosView():
 
 				self.tree.insert("", END, values=cadastros, iid=linha[0], tag='1')
 				cadastros.clear()
+

@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from Postgre import Postgre
+import JanelaLogin as jl
 
 class Cadastrar():
 
@@ -28,7 +29,8 @@ class Cadastrar():
 						cursor.execute("INSERT INTO cadastros(usuario, senha, nivel) VALUES (%s, %s, %s)", (usuario, senha, 1))
 						postgre.conn.commit()
 					messagebox.showinfo('Cadastro', 'Usuario cadastrado com sucesso.')
-					self.root.destroy()
+					self.root.destroy() #destroi root
+					jl.JanelaLogin() #inicia pela tela de login novamente
 				except Exception as e:
 					print('Erro inserção usuario: ', e)
 			else:

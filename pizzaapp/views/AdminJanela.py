@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from JanelaVisualizarProdutos import VisualizarProdutos
+from ProdutosView import Produtos
 from Postgre import Postgre
 
 class AdminJanela():
@@ -38,8 +38,8 @@ class AdminJanela():
 		#self.grupo.grid(row=3, column=1, columnspan=2, padx=5, pady=5)
 		self.grupo_pizza = IntVar(self.cadastrar)
 		self.grupo_salgados = IntVar(self.cadastrar)
-		c1 =Checkbutton(self.cadastrar, text='Pizza', variable=self.grupo_pizza, onvalue=1,offvalue=0).grid(row=3, column=1)
-		c2 =Checkbutton(self.cadastrar, text='Salgados', variable=self.grupo_salgados, onvalue=1, offvalue=0).grid(row=3, column=2)
+		Checkbutton(self.cadastrar, text='Pizza', variable=self.grupo_pizza, onvalue=1,offvalue=0).grid(row=3, column=1)
+		Checkbutton(self.cadastrar, text='Salgados', variable=self.grupo_salgados, onvalue=1, offvalue=0).grid(row=3, column=2)
 		#print(self.grupo_pizza.get())
 		#print(self.grupo_salgados.get())
 		#Checkbutton(self.cadastrar, text='Salgados', variable=self.grupo).grid(row=3, column=3)
@@ -48,12 +48,14 @@ class AdminJanela():
 		self.preco = Entry(self.cadastrar)
 		self.preco.grid(row=4, column=1, columnspan=2, padx=5, pady=5)
 
-		Button(self.cadastrar, text='Cadastrar', width=15, bg='gray', relief='flat', highlightbackground='#524f4f', command=self.cadastrar_produtos_impl).grid(row=5, column=0, pady=5, padx=5)
-		Button(self.cadastrar, text='Excluir', width=15, bg='gray', relief='flat', highlightbackground='#524f4f').grid(row=5, column=1, pady=5, padx=5)
-		Button(self.cadastrar, text='Atualizar', width=15, bg='gray', relief='flat', highlightbackground='#524f4f').grid(row=6, column=0, pady=5, padx=5)
-		Button(self.cadastrar, text='Limpar produtos', width=15, bg='gray', relief='flat', highlightbackground='#524f4f').grid(row=6, column=1, pady=5, padx=5)
+		produtos = Produtos(self.cadastrar)
 
-		visualizar_produtos = VisualizarProdutos(self.cadastrar)
+		Button(self.cadastrar, text='Cadastrar', width=15, bg='gray', relief='flat', highlightbackground='#524f4f', command=self.cadastrar_produtos_impl).grid(row=5, column=0, pady=5, padx=5)
+		Button(self.cadastrar, text='Excluir', width=15, bg='gray', relief='flat', highlightbackground='#524f4f', command= produtos.excluir_cadastros_impl).grid(row=5, column=1, pady=5, padx=5)
+		Button(self.cadastrar, text='Atualizar', width=15, bg='gray', relief='flat', highlightbackground='#524f4f', command=self.cadastrar_produtos_impl).grid(row=6, column=0, pady=5, padx=5)
+		Button(self.cadastrar, text='Limpar produtos', width=15, bg='gray', relief='flat', highlightbackground='#524f4f', command=produtos.limpar_cadastros_impl).grid(row=6, column=1, pady=5, padx=5)
+
+		
 
 		self.cadastrar.mainloop()
 
@@ -75,14 +77,19 @@ class AdminJanela():
 			grupo = 'salgados'
 			#self.grupo_salgados = False
 
-		try:
-			with postgre.conn.cursor() as cursor:
-				cursor.execute('INSERT INTO produtos(nome, ingredientes, grupo, preco) values(%s, %s, %s, %s)',
-				 (nome, ingredientes, grupo, preco))
-				postgre.conn.commit()
-		except Exception as e:
-			print('Erro ao inserir produtos: ', e)
+		if nome != '':
+			try:
+				with postgre.conn.cursor() as cursor:
+					cursor.execute('INSERT INTO produtos(nome, ingredientes, grupo, preco) values(%s, %s, %s, %s)',
+					 (nome, ingredientes, grupo, preco))
+					postgre.conn.commit()
+			except Exception as e:
+				print('Erro ao inserir produtos: ', e)
 
-		visualizar_produtos = VisualizarProdutos(self.cadastrar)
+		self.nome.delete(0, END)
+		self.ingredientes.delete(0, END)
+		self.preco.delete(0, END)
+		visualizar_produtos = Produtos(self.cadastrar)
 
+#para teste
 AdminJanela()
